@@ -44,8 +44,36 @@ app.post('/register', body(['username', 'password']).notEmpty(), async (request,
         res = new APIResponse(500, ...[,,], err.toString());
     }
     return response.status(res.statusCode).send(res);
-})
+});
+app.post('/login', body(['username', 'password']).notEmpty(), async (request, response) => {
+    let res;
+    // Validating request body.
+    const validation = validateRequest(request);
+    if (validation)
+        return response.status(validation.statusCode, validation);
+    // Performing the action.
+    try {
+        let username = request.body.username.toLowerCase();
+        let password = request.body.password;
+        res = await app.Service.loginUserMethod(username, password);
+    }
+    catch(err) {
+        res = new APIResponse(500, ...[,,], err.toString());
+    }
+    return response.status(res.statusCode).send(res);
+});
 
+// Validation helper
+// Returns null if validation of the request was successful, and 400 response if not.
+function validateRequest(request) {
+    const validation = validationResult(request);
+    if (!validation.isEmpty()) {
+        let errors = validation.array();
+        let res = new APIResponse(400, ...[,,,], errors);
+        return res;
+    }
+    return null;
+}
 // Sample endpoints
 // app.post('/sample', body('data').notEmpty(), async (request, response) => {
 //     const valResult = validationResult(request);
