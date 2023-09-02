@@ -10,14 +10,17 @@ module.exports.APIService = class APIService {
         this.database = database;
     }
     // Methods
-    async registerUserMethod(username, password) {
+    async registerUserMethod(username, password, name) {
         // Check if user is already registered.
         let user = await this.database.getUserByUsername(username);
         if (user)
             return new APIResponse(409, false, 'User is already registered.');
         // Register the user.
         let hash = this.#encrypt(password);
-        await this.database.registerUser(username, hash);
+        let result = await this.database.registerUser(username, hash);
+        // Create a profile for the user.
+        let userID = result.insertedId;
+        await this.database.createUserProfile(name, userID);
         return new APIResponse(201, true, 'Successfully registered.');
     }
     async loginUserMethod(username, password) {

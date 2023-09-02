@@ -4,6 +4,7 @@ const { SampleModel } =  require('../models/sample');
 
 const config = require('../config.json');
 const { UserRegistrationDTO } = require('../models/registration');
+const { UserProfile } = require('../models/profile');
 
 module.exports.Database = class Database {
     // Class fields
@@ -61,6 +62,32 @@ module.exports.Database = class Database {
             let queryDoc = { username: username };
             const users = this.database.collection(DatabaseCollections.Users);
             result = await users.findOne(queryDoc);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
+    async createUserProfile(name, userID) {
+        let result;
+        let record = new UserProfile(name, userID, []);
+        try {
+            await this.#connect();
+            const profiles = this.database.collection(DatabaseCollections.Profiles);
+            result = await profiles.insertOne(record);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
+    async getProfileByUserID(id) {
+        let result;
+        try {
+            await this.#connect();
+            let queryDoc = { userID: id };
+            const profiles = this.database.collection(DatabaseCollections.Profiles);
+            result = await profiles.findOne(queryDoc);
         }
         finally {
             this.#disconnect();
