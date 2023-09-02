@@ -25,6 +25,26 @@ app.get('/status', (request, response) => {
     let res = new APIResponse(200, `API started and listening on port ${PORT}.`)
     response.status(res.statusCode).send(res);
 });
+app.post('/register', body(['username', 'password']).notEmpty(), async (request, response) => {
+    let res;
+    // Validating request body.
+    const validation = validationResult(request);
+    if (!validation.isEmpty()) {
+        let errors = validation.array();
+        res = new APIResponse(400, ...[,,,], errors);
+        return response.status(res.statusCode).send(res);
+    }
+    // Performing the action.
+    try {
+        let username = request.body.username.toLowerCase();
+        let password = request.body.password;
+        res = await app.Service.registerUserMethod(username, password);
+    }
+    catch(err) {
+        res = new APIResponse(500, ...[,,], err.toString());
+    }
+    return response.status(res.statusCode).send(res);
+})
 
 // Sample endpoints
 // app.post('/sample', body('data').notEmpty(), async (request, response) => {

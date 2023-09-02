@@ -3,6 +3,7 @@ const { DatabaseCollections } = require('../entities/collections');
 const { SampleModel } =  require('../models/sample');
 
 const config = require('../config.json');
+const { UserRegistrationDTO } = require('../models/registration');
 
 module.exports.Database = class Database {
     // Class fields
@@ -40,6 +41,32 @@ module.exports.Database = class Database {
         this.database = null;
     }
     // General methods
+    async registerUser(username, hash) {
+        let result;
+        let record = new UserRegistrationDTO(username, hash);
+        try {
+            await this.#connect();
+            const users = this.database.collection(DatabaseCollections.Users);
+            result = await users.insertOne(record);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
+    async getUserByUsername(username) {
+        let result;
+        try {
+            await this.#connect();
+            let queryDoc = { username: username };
+            const users = this.database.collection(DatabaseCollections.Users);
+            result = await users.findOne(queryDoc);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
     // Sample methods
     // async sampleWrite(data) {
     //     let record = new SampleModel(data);
