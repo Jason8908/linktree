@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Code-Trinkets/linktree#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mongodb": "^6.0.0"
   }
 }

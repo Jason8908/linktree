@@ -1,5 +1,5 @@
-./api/config.json
+**/config.json
 
 **/.DS_STORE
 
-./api/node_modules/
+**/node_modules/

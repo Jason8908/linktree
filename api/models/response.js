@@ -1,4 +1,4 @@
-export class APIResponse {
+module.exports.APIResponse = class APIResponse {
     // Class fields
     statusCode;
     data;
