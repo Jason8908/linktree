@@ -25,7 +25,7 @@ app.get('/status', (request, response) => {
     let res = new APIResponse(200, `API started and listening on port ${PORT}.`)
     response.status(res.statusCode).send(res);
 });
-app.post('/register', body(['username', 'password']).notEmpty(), async (request, response) => {
+app.post('/register', body(['username', 'password', 'name']).notEmpty().escape(), async (request, response) => {
     let res;
     // Validating request body.
     const validation = validationResult(request);
@@ -37,15 +37,16 @@ app.post('/register', body(['username', 'password']).notEmpty(), async (request,
     // Performing the action.
     try {
         let username = request.body.username.toLowerCase();
+        let name = request.body.name;
         let password = request.body.password;
-        res = await app.Service.registerUserMethod(username, password);
+        res = await app.Service.registerUserMethod(username, password, name);
     }
     catch(err) {
         res = new APIResponse(500, ...[,,], err.toString());
     }
     return response.status(res.statusCode).send(res);
 });
-app.post('/login', body(['username', 'password']).notEmpty(), async (request, response) => {
+app.post('/login', body(['username', 'password']).notEmpty().escape(), async (request, response) => {
     let res;
     // Validating request body.
     const validation = validateRequest(request);
