@@ -1,6 +1,7 @@
 const { APIResponse } = require("../models/response");
 const config = require('../config.json');
 const bcrypt = require('bcryptjs');
+const { TokenService } = require("./tokens");
 
 module.exports.APIService = class APIService {
     // Class fields and constructor
@@ -18,6 +19,13 @@ module.exports.APIService = class APIService {
         let hash = this.#encrypt(password);
         await this.database.registerUser(username, hash);
         return new APIResponse(201, true, 'Successfully registered.');
+    }
+    async loginUserMethod(username, password) {
+        let user = await this.database.getUserByUsername(username);
+        if (!user || !this.#checkHash(password, user.hash))
+            return new APIResponse(401, false, "Incorrect username or password.");
+        let token = TokenService.generateToken({ _id: user._id });
+        return new APIResponse(201, token, 'Successfully logged in!');
     }
     // Helpers
     #encrypt(data) {
