@@ -68,9 +68,9 @@ module.exports.Database = class Database {
         }
         return result;
     }
-    async createUserProfile(name, userID) {
+    async createUserProfile(name, userID, username) {
         let result;
-        let record = new UserProfile(name, userID, []);
+        let record = new UserProfile(name, userID, [], username);
         try {
             await this.#connect();
             const profiles = this.database.collection(DatabaseCollections.Profiles);

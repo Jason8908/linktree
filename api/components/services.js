@@ -20,7 +20,7 @@ module.exports.APIService = class APIService {
         let result = await this.database.registerUser(username, hash);
         // Create a profile for the user.
         let userID = result.insertedId;
-        await this.database.createUserProfile(name, userID);
+        await this.database.createUserProfile(name, userID, username);
         return new APIResponse(201, true, 'Successfully registered.');
     }
     async loginUserMethod(username, password) {
