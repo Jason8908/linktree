@@ -1,12 +1,14 @@
 const express = require('express');
-const config = require('./config.json');
+
+require('dotenv').config();
+
 const { APIResponse } = require('./models/response');
 const { Database } = require('./components/database');
 const { APIService } = require('./components/services');
 const { query, body, param, validationResult } = require('express-validator');
 const { TokenService } = require('./components/tokens');
 
-const PORT = process.env.PORT || config.server.port;
+const PORT = +process.env.SERVER_PORT;
 
 // App setup
 const app = express();

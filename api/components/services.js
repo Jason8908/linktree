@@ -1,5 +1,4 @@
 const { APIResponse } = require("../models/response");
-const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const { TokenService } = require("./tokens");
 const { Link } = require("../models/link");
@@ -19,7 +18,7 @@ module.exports.APIService = class APIService {
             return new APIResponse(409, false, 'User is already registered.');
         // Register the user.
         let hash = this.#encrypt(password);
-        let result = await this.database.registerUser(username, hash);
+        let result = await this.database.registerUser(username, hash, name);
         // Create a profile for the user.
         let userID = result.insertedId;
         await this.database.createUserProfile(name, userID, username);
@@ -51,7 +50,7 @@ module.exports.APIService = class APIService {
     }
     // Helpers
     #encrypt(data) {
-        return bcrypt.hashSync(data, config.hash.saltLength);
+        return bcrypt.hashSync(data, +process.env.HASH_SALT_LENGTH);
     }
     #checkHash(expected, hash) {
         return bcrypt.compareSync(expected, hash);
