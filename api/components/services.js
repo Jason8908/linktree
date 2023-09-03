@@ -43,7 +43,7 @@ module.exports.APIService = class APIService {
     async getProfileMethod(id) {
         let profile = await this.database.getProfileByDisplayID(id);
         if (!profile)
-            return new APIResponse(404, null, `Profile with display ID: '${displayID}' does not exist.`);
+            return new APIResponse(404, null, `Profile with display ID: '${id}' does not exist.`);
         let result = new UserProfile(profile.name, profile.userID, profile.links, profile.displayID);
         return new APIResponse(200, result);
     }
