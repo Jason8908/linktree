@@ -32,10 +32,12 @@ module.exports.APIService = class APIService {
         let token = TokenService.generateToken({ _id: user._id });
         return new APIResponse(201, token, 'Successfully logged in!');
     }
-    async updateLinks(displayID, links) {
+    async updateLinks(displayID, links, claims) {
         let profile = await this.database.getProfileByDisplayID(displayID);
         if (!profile)
             return new APIResponse(404, null, `Profile with display ID: '${displayID}' does not exist.`);
+        if (claims._id != profile.userID.toString())
+            return new APIResponse(401, null, 'No access to this profile.');
         let linkArr = this.#convertLinksList(links);
         await this.database.updateLinks(displayID, linkArr);
         return new APIResponse(200, linkArr, 'Links successfully updated!');

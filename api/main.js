@@ -4,6 +4,7 @@ const { APIResponse } = require('./models/response');
 const { Database } = require('./components/database');
 const { APIService } = require('./components/services');
 const { query, body, param, validationResult } = require('express-validator');
+const { TokenService } = require('./components/tokens');
 
 const PORT = process.env.PORT || config.server.port;
 
@@ -65,6 +66,12 @@ app.post('/login', body(['username', 'password']).notEmpty().escape(), async (re
 });
 app.put('/links/:displayID', body(['links.*.label', 'links.*.link']).notEmpty(), async (request, response) => {
     let res;
+    let payload = authorize(request);
+    // Authorizing request
+    if (!payload) {
+        res = new APIResponse(401, null, 'Unauthorized.');
+        return response.status(res.statusCode).send(res);
+    }
     // Validating request body.
     const validation = validateRequest(request);
     if (validation)
@@ -73,7 +80,7 @@ app.put('/links/:displayID', body(['links.*.label', 'links.*.link']).notEmpty(),
     try {
         let displayID = request.params['displayID'];
         let links = request.body.links;
-        res = await app.Service.updateLinks(displayID, links);
+        res = await app.Service.updateLinks(displayID, links, payload);
     }
     catch(err) {
         res = new APIResponse(500, ...[,,], err.toString());
@@ -107,6 +114,15 @@ function validateRequest(request) {
         return res;
     }
     return null;
+}
+// Authorization
+// Returns payload if token is valid, and null if not.
+function authorize(request) {
+    let jwt = request.headers['authorization'];
+    if (!jwt) return null;
+    let payload = TokenService.verifyToken(jwt);
+    if (!payload || !payload._id) return null;
+    return payload;
 }
 // Sample endpoints
 // app.post('/sample', body('data').notEmpty(), async (request, response) => {
