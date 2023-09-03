@@ -2,6 +2,7 @@ const { APIResponse } = require("../models/response");
 const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const { TokenService } = require("./tokens");
+const { Link } = require("../models/link");
 
 module.exports.APIService = class APIService {
     // Class fields and constructor
@@ -30,6 +31,14 @@ module.exports.APIService = class APIService {
         let token = TokenService.generateToken({ _id: user._id });
         return new APIResponse(201, token, 'Successfully logged in!');
     }
+    async updateLinks(displayID, links) {
+        let profile = await this.database.getProfileByDisplayID(displayID);
+        if (!profile)
+            return new APIResponse(404, null, `Profile with display ID: '${displayID}' does not exist.`);
+        let linkArr = this.#convertLinksList(links);
+        await this.database.updateLinks(displayID, linkArr);
+        return new APIResponse(200, linkArr, 'Links successfully updated!');
+    }
     // Helpers
     #encrypt(data) {
         return bcrypt.hashSync(data, config.hash.saltLength);
@@ -37,7 +46,12 @@ module.exports.APIService = class APIService {
     #checkHash(expected, hash) {
         return bcrypt.compareSync(expected, hash);
     }
-
+    #convertLinksList(links) {
+        let result = [];
+        for(var link of links)
+            result.push(new Link(link.label, link.link));
+        return result;
+    }
     // Sample methods
     // async sampleWriteMethod(data) {
     //     let res;

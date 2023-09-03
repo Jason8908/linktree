@@ -94,6 +94,37 @@ module.exports.Database = class Database {
         }
         return result;
     }
+    async getProfileByDisplayID(id) {
+        let result;
+        try {
+            await this.#connect();
+            let queryDoc = { displayID: id };
+            const profiles = this.database.collection(DatabaseCollections.Profiles);
+            result = await profiles.findOne(queryDoc);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
+    async updateLinks(id, links) {
+        let result;
+        try {
+            await this.#connect();
+            let filter = { displayID: id };
+            let updateDoc = {
+                $set: {
+                    links: links
+                }
+            };
+            const profiles = this.database.collection(DatabaseCollections.Profiles);
+            result = await profiles.updateOne(filter, updateDoc);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
     // Sample methods
     // async sampleWrite(data) {
     //     let record = new SampleModel(data);
