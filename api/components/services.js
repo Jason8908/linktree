@@ -3,6 +3,7 @@ const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const { TokenService } = require("./tokens");
 const { Link } = require("../models/link");
+const { UserProfile } = require("../models/profile");
 
 module.exports.APIService = class APIService {
     // Class fields and constructor
@@ -38,6 +39,13 @@ module.exports.APIService = class APIService {
         let linkArr = this.#convertLinksList(links);
         await this.database.updateLinks(displayID, linkArr);
         return new APIResponse(200, linkArr, 'Links successfully updated!');
+    }
+    async getProfileMethod(id) {
+        let profile = await this.database.getProfileByDisplayID(id);
+        if (!profile)
+            return new APIResponse(404, null, `Profile with display ID: '${id}' does not exist.`);
+        let result = new UserProfile(profile.name, profile.userID, profile.links, profile.displayID);
+        return new APIResponse(200, result);
     }
     // Helpers
     #encrypt(data) {
