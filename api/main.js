@@ -124,6 +124,9 @@ function authorize(request) {
     if (!payload || !payload._id) return null;
     return payload;
 }
+
+module.exports = app;
+
 // Sample endpoints
 // app.post('/sample', body('data').notEmpty(), async (request, response) => {
 //     const valResult = validationResult(request);
