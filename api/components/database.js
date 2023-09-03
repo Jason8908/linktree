@@ -2,7 +2,6 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const { DatabaseCollections } = require('../entities/collections');
 const { SampleModel } =  require('../models/sample');
 
-const config = require('../config.json');
 const { UserRegistrationDTO } = require('../models/registration');
 const { UserProfile } = require('../models/profile');
 
@@ -13,10 +12,10 @@ module.exports.Database = class Database {
     database = null;
     // Constructor
     constructor() {
-        this.connectionString = config.database.connection;
+        this.connectionString = process.env.DATABASE_CONNECTION;
         // Null check
         if (!this.connectionString)
-            throw new Error('Missing database:connection configuration field.');
+            throw new Error('Missing DATABASE_CONNECTION environment variable.');
         // Creating the MongoDB client
         this.client = new MongoClient(this.connectionString, {
             serverApi: {
@@ -32,7 +31,7 @@ module.exports.Database = class Database {
         //if (this.client) return;
         await this.client.connect();
         // Setting the database field.
-        this.database = this.client.db(config.database.defaultDB);
+        this.database = this.client.db(process.env.DATABASE_DEFAULT_DB);
     }
     async #disconnect() {
         // If there is no current connection.
@@ -42,9 +41,9 @@ module.exports.Database = class Database {
         this.database = null;
     }
     // General methods
-    async registerUser(username, hash) {
+    async registerUser(username, hash, name) {
         let result;
-        let record = new UserRegistrationDTO(username, hash);
+        let record = new UserRegistrationDTO(username, hash, name);
         try {
             await this.#connect();
             const users = this.database.collection(DatabaseCollections.Users);
