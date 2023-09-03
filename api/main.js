@@ -79,7 +79,23 @@ app.put('/links/:displayID', body(['links.*.label', 'links.*.link']).notEmpty(),
         res = new APIResponse(500, ...[,,], err.toString());
     }
     return response.status(res.statusCode).send(res);
-})
+});
+app.get('/profile/:displayID', param('displayID').notEmpty(), async (request, response) => {
+    let res;
+    // Validating request body.
+    const validation = validateRequest(request);
+    if (validation)
+        return response.status(validation.statusCode).send(validation);
+    // Performing the action.
+    try {
+        let displayID = request.params['displayID'];
+        res = await app.Service.getProfileMethod(displayID);
+    }
+    catch(err) {
+        res = new APIResponse(500, ...[,,], err.toString());
+    }
+    return response.status(res.statusCode).send(res);
+});
 
 // Validation helper
 // Returns null if validation of the request was successful, and 400 response if not.
