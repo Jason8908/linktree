@@ -1,0 +1,14 @@
+{
+    "home": {
+        "heading": "Linktree Clone"
+    },
+    "register": {
+        "heading": "Register Now!",
+        "username": "Username",
+        "password": "Password",
+        "name": "Name"
+    },
+    "api": {
+        "baseUrl": "https://linktree-eight-rho.vercel.app/"
+    }
+}
