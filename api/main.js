@@ -1,4 +1,5 @@
 const express = require('express');
+var cors = require('cors')
 
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ const PORT = +process.env.SERVER_PORT;
 // App setup
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Dependencies
 app.Database = new Database();
