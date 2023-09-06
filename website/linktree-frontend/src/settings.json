@@ -6,9 +6,19 @@
         "heading": "Register Now!",
         "username": "Username",
         "password": "Password",
-        "name": "Name"
+        "name": "Name",
+        "switchText": "Login"
+    },
+    "login": {
+        "heading": "Login",
+        "switchText": "Register"
     },
     "api": {
         "baseUrl": "https://linktree-eight-rho.vercel.app/"
+    },
+    "cookies": {
+        "options": {
+            "maxAge": 3600
+        }
     }
 }

@@ -44,21 +44,37 @@ body {
   color: white;
 }
 
+.btnRegister:active {
+  color: white !important;
+}
+
 .inputTxt {
+  width: 350px;
   border-style: solid;
   border-color: grey;
   border-width: 1px;
   border-radius: 5px;
   padding: 2%;
+  font-weight: 100;
 }
 
 .invalidInfo {
   border-color: red !important;
 }
 
+.lblSwitchForms {
+  color: #1c81fc;
+  text-decoration: underline;
+}
+
+.lblSwitchForms:hover {
+  cursor: pointer;
+}
+
 .lblInfo {
   color: red;
   text-align: center;
+  font-weight: 100;
 }
 
 .spin {

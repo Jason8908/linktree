@@ -9,13 +9,15 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
+import { useCookies } from 'react-cookie';
+
 import { toast } from 'react-toastify';
 
-interface RegisterProps {
+interface LoginProps {
     handleClick: (event: React.MouseEvent<HTMLLabelElement>) => void
 }
 
-export default function Register({handleClick}: RegisterProps) {
+export default function Login({ handleClick }: LoginProps) {
     // State variables
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
@@ -24,8 +26,8 @@ export default function Register({handleClick}: RegisterProps) {
     const [lblInfo, setLblInfo] = useState("");
     const [usernameInvalid, setUsernameInvalid] = useState(false);
     const [passwordInvalid, setPasswordInvalid] = useState(false);
-    const [nameInvalid, setNameInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
     const baseUrl = settings.api.baseUrl;
 
     function validateForm() {
@@ -34,7 +36,6 @@ export default function Register({handleClick}: RegisterProps) {
         let infoStr = "";
         let usernameTemp = false;
         let passwordTemp = false;
-        let nameTemp = false;
         // Validating form inputs.
         if (!username) {
             valid = false;
@@ -48,17 +49,10 @@ export default function Register({handleClick}: RegisterProps) {
                 infoStr = 'Missing required fields.';
             passwordTemp = true;
         }
-        if (!name) {
-            valid = false;
-            if (!infoStr)
-                infoStr = 'Missing required fields.';
-            nameTemp = true;
-        }
         // Setting variables
         setLblInfo(infoStr);
         setUsernameInvalid(usernameTemp);
         setPasswordInvalid(passwordTemp);
-        setNameInvalid(nameTemp);
         // Returning results.
         return valid;
     }
@@ -68,17 +62,16 @@ export default function Register({handleClick}: RegisterProps) {
         if (!validateForm()) return false;
         setDisabledSubmit(true);
         // Sending POST request to API.
-        postRegistration();
+        postLogin();
     }
 
-    function postRegistration() {
+    function postLogin() {
         setLoading(true);
         // Setting up data.
-        const url = baseUrl + 'register';
+        const url = baseUrl + 'login';
         const body = {
             username: username,
-            password: password,
-            name: name
+            password: password
         }
         const options = {
             method: 'POST',
@@ -92,10 +85,13 @@ export default function Register({handleClick}: RegisterProps) {
         .then(response => response.json())
         .then(res => {
             console.log(res.data);
-            if (res.statusCode == 409)
-                toast.error('That username is already taken!');
+            if (res.statusCode == 401)
+                toast.error('Incorrect username or password.');
             else if (!res.data) 
                 toast.error('An internal error occurred.');
+            else {
+                setCookie('jwt', res.data, settings.cookies.options);
+            }
         })
         .catch(err => {
             console.log('There was an error making a registration API call.', err);
@@ -110,13 +106,13 @@ export default function Register({handleClick}: RegisterProps) {
     return (
         <div className="divRegister flex flex-col items-center">
             <h1 className={`${neue.className} h1Register`}>
-                {settings.register.heading}
+                {settings.login.heading}
             </h1>
             <br />
             <form action={submitForm} className='formRegister flex-col flex'>
                 <input
                     disabled={disableSubmit}
-                    className={`inputTxt ${usernameInvalid ? 'invalidInfo' : ''}`}
+                    className={`inputTxt ${usernameInvalid ? 'invalidInfo' : ''} ${neue.className}`}
                     placeholder={settings.register.username}
                     value={username}
                     onChange={e => setUsername(e.target.value)}
@@ -124,28 +120,20 @@ export default function Register({handleClick}: RegisterProps) {
                 <br />
                 <input
                     disabled={disableSubmit}
-                    className={`inputTxt ${passwordInvalid ? 'invalidInfo' : ''}`}
+                    className={`inputTxt ${passwordInvalid ? 'invalidInfo' : ''} ${neue.className}`}
                     type='password'
                     placeholder={settings.register.password}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
                 <br />
-                <input
-                    disabled={disableSubmit}
-                    className={`inputTxt ${nameInvalid ? 'invalidInfo' : ''}`}
-                    placeholder={settings.register.name}
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                />
-                <br />
                 <Button variant="outline-info" className='btnRegister' type="submit" disabled={disableSubmit}>Submit</Button>
                 <br />
                 <label className='lblSwitchForms text-center' onClick={handleClick}>
-                    {settings.register.switchText}
+                    {settings.login.switchText}
                 </label>
                 <br />
-                <label className='lblInfo'>{lblInfo}</label>
+                <label className={`lblInfo ${neue.className}`}>{lblInfo}</label>
                 <br />
                 {loading && <FontAwesomeIcon
                     pulse
