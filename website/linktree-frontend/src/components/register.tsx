@@ -91,7 +91,6 @@ export default function Register({handleClick}: RegisterProps) {
         fetch(url, options)
         .then(response => response.json())
         .then(res => {
-            console.log(res.data);
             if (res.statusCode == 409)
                 toast.error('That username is already taken!');
             else if (!res.data) 

@@ -36,6 +36,15 @@ body {
   box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
 }
 
+.divLink {
+  /* background: rgb(27,255,32) !important;
+  background: linear-gradient(45deg, rgba(27,255,32,1) 0%, rgba(0,204,255,1) 50%, rgba(255,101,250,1) 100%) !important;
+  border-style: solid;
+  border-color: white;
+  border-width: 3px; */
+  width: 40%;
+}
+
 .formRegister {
   padding: 5%;
 }
@@ -79,4 +88,54 @@ body {
 
 .spin {
   animation: spin infinite 5s linear;
+}
+
+.divMain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.h1NotFound {
+  font-weight: 100;
+  font-size: 4em;
+}
+
+.parNotFound {
+  margin-top: 2%;
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.5em;
+}
+
+.btnLink {
+  background-color: white;
+  padding: 2%;
+  width: 100%;
+  white-space: nowrap;
+  margin-top: 5%;
+  border-radius: 50px;
+  font-weight: 100;
+  -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  font-size: 1em;
+  transition: 0.2s;
+}
+
+.btnLink:hover {
+  transform: scale(1.05);
+}
+
+.aLink {
+  width: 100%;
+}
+
+.h1LinksName {
+  font-size: 4em;
+}
+
+.h2LinksSubtitle {
+  font-weight: 100;
+  margin-bottom: 10%;
 }

@@ -84,7 +84,6 @@ export default function Login({ handleClick }: LoginProps) {
         fetch(url, options)
         .then(response => response.json())
         .then(res => {
-            console.log(res.data);
             if (res.statusCode == 401)
                 toast.error('Incorrect username or password.');
             else if (!res.data) 
