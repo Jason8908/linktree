@@ -20,5 +20,9 @@
         "options": {
             "maxAge": 3600
         }
+    },
+    "notFound": {
+        "heading": "Oops!",
+        "description": "We couldn't find the profile associated with this link. Double check the link and try again!"
     }
 }
