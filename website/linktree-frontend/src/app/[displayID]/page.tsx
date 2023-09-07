@@ -114,7 +114,6 @@ export default function LinksPage({ params }: LinkPageParams) {
                                 <FontAwesomeIcon
                                     className={`iconLink`}
                                     icon={faLink}
-                                    style={{ fontSize: 35 }}
                                     onClick={copyLink}
                                 />
                             </h1>
