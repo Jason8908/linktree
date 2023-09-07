@@ -24,5 +24,11 @@
     "notFound": {
         "heading": "Oops!",
         "description": "We couldn't find the profile associated with this link. Double check the link and try again!"
+    },
+    "dashbaord": {
+        "edit": "Edit",
+        "save": "Save",
+        "linkPlaceholder": "Enter your link here.",
+        "labelPlaceholder": "Give your link a name!"
     }
 }

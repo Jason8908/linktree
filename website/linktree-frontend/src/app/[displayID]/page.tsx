@@ -18,6 +18,7 @@ interface LinkPageParams {
 }
 
 export interface LinkProps {
+    _id: string;
     label: string;
     link: string;
 }
