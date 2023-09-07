@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import jwt_decode from "jwt-decode";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faLink } from "@fortawesome/free-solid-svg-icons";
 import Link from '@/components/link';
 import EditLink from '@/components/editLink';
 import { LinkProps } from '../[displayID]/page';
@@ -107,8 +107,13 @@ export default function DashboardPage() {
           });
         setLinks(newLinks);
     }
-    function deleteLink(id: string) {
-        
+    // Methods
+    function copyLink() {
+        const baseUrl = (process.env.VERCEL_URL) ? process.env.VERCEL_URL : settings.baseUrl;
+        const toCopy = baseUrl + `/${username}`;
+        // Copy data to the clipboard.
+        navigator.clipboard.writeText(toCopy);
+        toast.success('Copied!');
     }
     return (
         <main className="flex min-h-screen flex-col items-center divMain">
@@ -137,8 +142,14 @@ export default function DashboardPage() {
                     !loading && username && name
                     &&
                     <>
-                        <h1 className={`h1LinksName ${neue.className}`}>
+                        <h1 className={`h1LinksName flex ${neue.className}`}>
                             {`${name}'s Links`}
+                            <FontAwesomeIcon
+                                className={`iconLink`}
+                                icon={faLink}
+                                style={{ fontSize: 35 }}
+                                onClick={copyLink}
+                            />
                         </h1>
                         <h2 className={`h2LinksSubtitle ${neue.className}`}>
                             {`@${username}`}
@@ -146,17 +157,21 @@ export default function DashboardPage() {
                     </>
                 }
                 {
+                    !loading && !editing && username && name 
+                    &&
+                    <button className={`btnEditSave ${neue.className}`} onClick={onClickEdit}>
+                        {settings.dashbaord.edit}
+                    </button>
+                }
+                {
                     !loading && !editing && (links.length > 0)
                         && 
                         <>
-                            <button className={`btnEditSave ${neue.className}`} onClick={onClickEdit}>
-                                {settings.dashbaord.edit}
-                            </button>
                             {links.map((link, index) => <Link key={`link${index}`} link={link.link} label={link.label}/>)}
                         </>
                 }
                 {
-                    !loading && editing && (links.length > 0)
+                    !loading && editing
                         && 
                         <EditLink links={links} displayID={username} saveLinks={updateLinks}/>
                 }

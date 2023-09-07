@@ -183,7 +183,14 @@ body {
   justify-content: center;
 }
 
-.iconTrash:hover, .iconPlus:hover {
+.h1LinksName {
+  width: fit-content !important;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconTrash:hover, .iconPlus:hover, .iconLink:hover {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(52%) sepia(80%) saturate(0%) hue-rotate(177deg) brightness(88%) contrast(53%);
 }
@@ -194,4 +201,8 @@ body {
 
 .iconPlus {
   margin-top: 3%;
+}
+
+.iconLink {
+  margin-left: 3%;
 }

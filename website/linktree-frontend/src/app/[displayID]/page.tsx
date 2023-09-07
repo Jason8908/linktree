@@ -10,7 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import { useState, useEffect, Fragment } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faLink } from "@fortawesome/free-solid-svg-icons";
 import Link from '@/components/link';
 
 interface LinkPageParams {
@@ -61,6 +61,14 @@ export default function LinksPage({ params }: LinkPageParams) {
             setLoading(false);
         });
     }, [baseUrl, displayID]);
+    // Methods
+    function copyLink() {
+        const baseUrl = (process.env.VERCEL_URL) ? process.env.VERCEL_URL : settings.baseUrl;
+        const toCopy = baseUrl + `/${displayID}`;
+        // Copy data to the clipboard.
+        navigator.clipboard.writeText(toCopy);
+        toast.success('Copied!');
+    }
     return (
         <main className="flex min-h-screen flex-col items-center divMain">
             <ToastContainer 
@@ -101,8 +109,14 @@ export default function LinksPage({ params }: LinkPageParams) {
                     !loading && (links.length > 0)
                         && 
                         <>
-                            <h1 className={`h1LinksName ${neue.className}`}>
+                            <h1 className={`h1LinksName flex ${neue.className}`}>
                                 {`${name}'s Links`}
+                                <FontAwesomeIcon
+                                    className={`iconLink`}
+                                    icon={faLink}
+                                    style={{ fontSize: 35 }}
+                                    onClick={copyLink}
+                                />
                             </h1>
                             <h2 className={`h2LinksSubtitle ${neue.className}`}>
                                 {`@${username}`}

@@ -30,5 +30,6 @@
         "save": "Save",
         "linkPlaceholder": "Enter your link here.",
         "labelPlaceholder": "Give your link a name!"
-    }
+    },
+    "baseUrl": "http://localhost:3000"
 }
