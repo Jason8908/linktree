@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Rubik&family=Varela+Round&display=swap');
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --foreground-rgb: 238,174,202;
+  --background-start-rgb: 238,174,202;
+  --background-end-rgb: 148,187,233;
+}
+
+body {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(244,244,244,1) 0%, rgba(238,238,238,1) 100%);
+}
+
+.h1Title {
+  font-size: 3em;
+  text-align: center;
+  font-weight: 100;
+  letter-spacing: .2em;
+}
+
+.h1Register {
+  font-weight: 100;
+  font-size: 1.5em;
+}
+
+.divRegister {
+  background-color: white;
+  border-radius: 20px;
+  padding: 3%;
+  -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+}
+
+.divLink {
+  /* background: rgb(27,255,32) !important;
+  background: linear-gradient(45deg, rgba(27,255,32,1) 0%, rgba(0,204,255,1) 50%, rgba(255,101,250,1) 100%) !important;
+  border-style: solid;
+  border-color: white;
+  border-width: 3px; */
+  width: 40%;
+}
+
+.formRegister {
+  padding: 5%;
+}
+
+.btnRegister:hover {
+  color: white;
+}
+
+.btnRegister:active {
+  color: white !important;
+}
+
+.inputTxt {
+  width: 350px;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 2%;
+  font-weight: 100;
+}
+
+.invalidInfo {
+  border-color: red !important;
+}
+
+.lblSwitchForms {
+  color: #1c81fc;
+  text-decoration: underline;
+}
+
+.lblSwitchForms:hover {
+  cursor: pointer;
+}
+
+.lblInfo {
+  color: red;
+  text-align: center;
+  font-weight: 100;
+}
+
+.spin {
+  animation: spin infinite 5s linear;
+}
+
+.divMain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.h1NotFound {
+  font-weight: 100;
+  font-size: 4em;
+}
+
+.parNotFound {
+  margin-top: 2%;
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.5em;
+}
+
+.btnLink {
+  background-color: white;
+  padding: 2%;
+  width: 100%;
+  white-space: nowrap;
+  margin-top: 5%;
+  border-radius: 50px;
+  font-weight: 100;
+  -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  font-size: 1em;
+  transition: 0.2s;
+}
+
+.btnLink:hover {
+  transform: scale(1.05);
+}
+
+.aLink {
+  width: 100%;
+}
+
+.h1LinksName {
+  font-size: 4em;
+}
+
+.h2LinksSubtitle {
+  font-weight: 100;
+  margin-bottom: 10%;
+}

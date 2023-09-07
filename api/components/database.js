@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { DatabaseCollections } = require('../entities/collections');
 const { SampleModel } =  require('../models/sample');
@@ -118,6 +119,19 @@ module.exports.Database = class Database {
             };
             const profiles = this.database.collection(DatabaseCollections.Profiles);
             result = await profiles.updateOne(filter, updateDoc);
+        }
+        finally {
+            this.#disconnect();
+        }
+        return result;
+    }
+    async getProfileByUserID(id) {
+        let result;
+        try {
+            await this.#connect();
+            let queryDoc = { userID: new ObjectId(id) };
+            const profiles = this.database.collection(DatabaseCollections.Profiles);
+            result = await profiles.findOne(queryDoc);
         }
         finally {
             this.#disconnect();

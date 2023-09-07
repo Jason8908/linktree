@@ -1,0 +1,28 @@
+{
+    "home": {
+        "heading": "Linktree Clone"
+    },
+    "register": {
+        "heading": "Register Now!",
+        "username": "Username",
+        "password": "Password",
+        "name": "Name",
+        "switchText": "Login"
+    },
+    "login": {
+        "heading": "Login",
+        "switchText": "Register"
+    },
+    "api": {
+        "baseUrl": "https://linktree-eight-rho.vercel.app/"
+    },
+    "cookies": {
+        "options": {
+            "maxAge": 3600
+        }
+    },
+    "notFound": {
+        "heading": "Oops!",
+        "description": "We couldn't find the profile associated with this link. Double check the link and try again!"
+    }
+}
