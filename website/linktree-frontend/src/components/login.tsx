@@ -4,6 +4,7 @@ import settings from '../settings.json';
 
 import { neue } from '../assets/fonts';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +29,7 @@ export default function Login({ handleClick }: LoginProps) {
     const [passwordInvalid, setPasswordInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+    const { push } = useRouter();
     const baseUrl = settings.api.baseUrl;
 
     function validateForm() {
@@ -90,6 +92,7 @@ export default function Login({ handleClick }: LoginProps) {
                 toast.error('An internal error occurred.');
             else {
                 setCookie('jwt', res.data, settings.cookies.options);
+                push('/dashboard');
             }
         })
         .catch(err => {

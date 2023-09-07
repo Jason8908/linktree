@@ -139,3 +139,59 @@ body {
   font-weight: 100;
   margin-bottom: 10%;
 }
+
+.btnEditSave {
+  background-color: white;
+  padding: 2%;
+  -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.17); 
+  border-radius: 30px;
+  width: 15%;
+  transition: 0.1s;
+}
+
+.btnEditSave:hover {
+  background-color: #d1d1d1;
+}
+
+.txtLabel, .txtLink {
+  width: 350px;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1.5px;
+  border-radius: 5px;
+  padding: 1.5%;
+  font-weight: 100;
+  margin-right: 4%;
+}
+
+.txtLabel[disabled], .txtLink[disabled], .btnEditSave[disabled] {
+  background-color: #e3e3e3 !important;
+}
+
+.disableButton:hover  {
+  cursor: default !important;
+}
+
+.disableButton {
+  filter: brightness(0) saturate(100%) invert(52%) sepia(80%) saturate(0%) hue-rotate(177deg) brightness(88%) contrast(53%);
+}
+
+.divEditLink {
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconTrash:hover, .iconPlus:hover {
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(52%) sepia(80%) saturate(0%) hue-rotate(177deg) brightness(88%) contrast(53%);
+}
+
+.iconLoading {
+  margin-top: 3%;
+}
+
+.iconPlus {
+  margin-top: 3%;
+}
