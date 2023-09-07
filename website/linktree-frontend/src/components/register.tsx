@@ -4,10 +4,13 @@ import settings from '../settings.json';
 
 import { neue } from '../assets/fonts';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+
+import { useCookies } from 'react-cookie';
 
 import { toast } from 'react-toastify';
 
@@ -26,6 +29,8 @@ export default function Register({handleClick}: RegisterProps) {
     const [passwordInvalid, setPasswordInvalid] = useState(false);
     const [nameInvalid, setNameInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+    const { push } = useRouter();
     const baseUrl = settings.api.baseUrl;
 
     function validateForm() {
@@ -95,6 +100,48 @@ export default function Register({handleClick}: RegisterProps) {
                 toast.error('That username is already taken!');
             else if (!res.data) 
                 toast.error('An internal error occurred.');
+            else {
+                // Successful registration
+                postLogin();
+            }
+        })
+        .catch(err => {
+            console.log('There was an error making a registration API call.', err);
+            toast.error('An internal error occurred.');
+        })
+        .finally(() => {
+            setLoading(false);
+            setDisabledSubmit(false);
+        });
+    }
+
+    function postLogin() {
+        setLoading(true);
+        // Setting up data.
+        const url = baseUrl + 'login';
+        const body = {
+            username: username,
+            password: password
+        }
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        };
+        // Making POST request.
+        fetch(url, options)
+        .then(response => response.json())
+        .then(res => {
+            if (res.statusCode == 401)
+                toast.error('Incorrect username or password.');
+            else if (!res.data) 
+                toast.error('An internal error occurred.');
+            else {
+                setCookie('jwt', res.data, settings.cookies.options);
+                push('/dashboard');
+            }
         })
         .catch(err => {
             console.log('There was an error making a registration API call.', err);
