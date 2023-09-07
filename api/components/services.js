@@ -48,6 +48,13 @@ module.exports.APIService = class APIService {
         let result = new UserProfile(profile.name, profile.userID, profile.links, profile.displayID);
         return new APIResponse(200, result);
     }
+    async getDashboardMethod(id) {
+        let profile = await this.database.getProfileByUserID(id);
+        if (!profile)
+            return new APIResponse(404, null, `Profile with user ID: '${id}' does not exist.`);
+        let result = new UserProfile(profile.name, profile.userID, profile.links, profile.displayID);
+        return new APIResponse(200, result);
+    }
     // Helpers
     #encrypt(data) {
         return bcrypt.hashSync(data, +process.env.HASH_SALT_LENGTH);
