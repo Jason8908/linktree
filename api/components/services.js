@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { TokenService } = require("./tokens");
 const { Link } = require("../models/link");
 const { UserProfile } = require("../models/profile");
+const { ObjectId } = require('mongodb');
 
 module.exports.APIService = class APIService {
     // Class fields and constructor
@@ -65,7 +66,7 @@ module.exports.APIService = class APIService {
     #convertLinksList(links) {
         let result = [];
         for(var link of links)
-            result.push(new Link(link.label, link.link));
+            result.push(new Link(link.label, link.link, (link._id ? link._id : new ObjectId())));
         return result;
     }
     // Sample methods
